@@ -1,41 +1,34 @@
+from orden import Orden
 from pizza import Pizza
 
 class MaestroPizzero:
-
     def __init__(self, nom: str):
         self.__nombre = nom
-        self.__pizzasPorCocinar = []
-        self.__pizzasPorEntregar = []
+        self.__ordenes = []
 
     def establecerNombre(self, nom: str):
         self.__nombre = nom
 
-    def tomarPedido(self, var: str):
-        pizza = Pizza(var)
-        self.__pizzasPorCocinar.append(pizza)
+    def tomarPedido(self, orden: Orden):
+        if orden.obtenerEstadoOrden() == Orden.ESTADO_INICIAL:
+            self.__ordenes.append(orden)
 
     def cocinar(self):
-        for pizza in self.__pizzasPorCocinar:
-            print(self.__nombre + ": cocinando una pizza de " + pizza.obtenerVariedad())
-            self.__pizzasPorEntregar.append(pizza)
-        self.__pizzasPorCocinar = []
+        for orden in self.__ordenes:
+            if orden.obtenerEstadoOrden() == Orden.ESTADO_INICIAL:
+                print(f"{self.__nombre}: cocinando las pizzas de la orden {orden.obtenerNroOrden()}")
+                orden.establecerEstadoOrden(Orden.ESTADO_PARA_ENTREGAR)
+                for pizza in orden.obtenerPizzas():
+                    pizza.establecerEstado(Pizza.ESTADO_COCINADA)
 
-    def entregar(self, pizzas: int):
-        pizzasAEntregar = []
-        i = 0
-        for pizza in self.__pizzasPorEntregar:
-            pizzasAEntregar.append(pizza)
-            self.__pizzasPorEntregar.remove(pizza)
-            i += 1
-            if i == pizzas:
-                break
+    def entregar(self, orden: Orden):
+        if orden.obtenerEstadoOrden() == Orden.ESTADO_PARA_ENTREGAR:
+            pizzasAEntregar = []
+            for pizza in orden.obtenerPizzas():
+                if len(pizzasAEntregar) < 2:
+                    pizza.establecerEstado(Pizza.ESTADO_ENTREGADA)
+                    pizzasAEntregar.append(pizza)
+            print(f"{self.__nombre}: Entregando {len(pizzasAEntregar)} pizzas")
+            if all(pizza.obtenerEstado() == Pizza.ESTADO_ENTREGADA for pizza in orden.obtenerPizzas()):
+                orden.establecerEstadoOrden(Orden.ESTADO_ENTREGADA)
         return pizzasAEntregar
-
-    def obtenerNombre(self):
-        return self.__nombre
-    
-    def obtenerPizzasPorCocinar(self):
-        return self.__pizzasPorCocinar
-    
-    def obtenerPizzasPorEntregar(self):
-        return self.__pizzasPorEntregar

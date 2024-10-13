@@ -1,3 +1,5 @@
+from pizzavariedad import PizzaVariedad
+
 class Pizza:
     ESTADO_POR_COCINAR = 1
     ESTADO_COCINADA = 2

@@ -1,3 +1,9 @@
+from pizzavariedad import PizzaVariedad
+from pizza import Pizza
+from orden import Orden
+from maestropizzero import MaestroPizzero
+from mozo import Mozo
+
 class TesterPizzeria:
     def main(self):
         # Crear variedades de pizza
@@ -29,3 +35,4 @@ class TesterPizzeria:
 if __name__ == '__main__':
     tester = TesterPizzeria()
     tester.main()
+

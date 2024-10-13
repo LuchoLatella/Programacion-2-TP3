@@ -1,5 +1,6 @@
-class Mozo:
+from pizza import Pizza
 
+class Mozo:
     def __init__(self, nom: str):
         self.__nombre = nom
         self.__pizzas = []
@@ -7,27 +8,18 @@ class Mozo:
     def establecerNombre(self, nom: str):
         self.__nombre = nom
 
-    def tomarPizzas(self, pizzas):
-        pizzasTomadas = len(self.__pizzas)
-        pizzasATomar = len(pizzas)
-        if (pizzasATomar - pizzasTomadas) < 0:
-            print(self.__nombre + ": El mozo puede tomar un máximo de 2 pizzas!")
-        else:
+    def tomarPizzas(self, pizzas: list):
+        if len(self.__pizzas) + len(pizzas) <= 2:
             for pizza in pizzas:
-                print(self.__nombre + ": tomando una de " + pizza.obtenerVariedad() + " para ser entregada")
+            # Obtener el nombre de la variedad de la pizza antes de concatenar
+                print(f"{self.__nombre}: Tomando pizza de {pizza.obtenerVariedad().obtenerNombreVariedad()}")
                 self.__pizzas.append(pizza)
-    
+
+
     def servirPizzas(self):
         for pizza in self.__pizzas:
-            print(self.__nombre + ": Sirviendo pizza de " + pizza.obtenerVariedad())
+            print(f"{self.__nombre}: Sirviendo pizza de {pizza.obtenerVariedad().obtenerNombreVariedad()}")
         self.__pizzas = []
 
-    def obtenerNombre(self):
-        return self.__nombre
-    
-    def obtenerPizzas(self):
-        return self.__pizzas
-    
     def obtenerEstadoLibre(self):
-        pizzasTomadas = len(self.__pizzas)
-        return pizzasTomadas < 2
+        return len(self.__pizzas) < 2
